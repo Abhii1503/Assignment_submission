@@ -1,0 +1,115 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Program to Encrypt the Message entered by user and Decrypt the message when the Key is correct"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from cryptography.fernet import Fernet"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Enter the Message That you want to Encrypt\n",
+      "Hello, Pythonistas\n",
+      "Encrypted Message is: b'gAAAAABf15Eh43nqdBcf5zzzj1KEU7pSp_zcvkW6n4JyeSnwuw6Vkx_MPukZHh_9N4fszxwNpfzce8fDaQA5BvVSc3ETcc2isa_fT2vGDMXPTdEMIoCRZ6U='\n"
+     ]
+    }
+   ],
+   "source": [
+    "#function to generate key\n",
+    "def generateKey():\n",
+    "    '''\n",
+    "    generate a Key and Save to file\n",
+    "    '''\n",
+    "    key = Fernet.generate_key()\n",
+    "    key_file = open(\"secret_key\",\"wb\")\n",
+    "    key_file.write(key)\n",
+    "\n",
+    "#function to load the key \n",
+    "def load_key():\n",
+    "    '''\n",
+    "    Loads the key named secret_key from current Directory \n",
+    "    '''\n",
+    "    return open(\"secret_key\",\"rb\").read()\n",
+    "\n",
+    "def encrypt_message(message):\n",
+    "    '''\n",
+    "    encrypts the message\n",
+    "    '''\n",
+    "    generateKey()\n",
+    "    key = load_key()\n",
+    "    encoded_message = message.encode()\n",
+    "    f = Fernet(key)\n",
+    "    encrypted_message = f.encrypt(encoded_message)\n",
+    "    print(\"Encrypted Message is:\",encrypted_message)\n",
+    "    \n",
+    "message = input(\"Enter the Message That you want to Encrypt\\n\")\n",
+    "encrypt_message(message)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Decrypted message is: Hello, Pythonistas\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Decrypting the Key\n",
+    "def  decrypt_message(encrypted_message):\n",
+    "    '''\n",
+    "    Decryptes an encrypted message\n",
+    "    '''\n",
+    "    key = load_key()\n",
+    "    f = Fernet(key)\n",
+    "    decrypted_message = f.decrypt(encrypted_message)\n",
+    "    print(\"Decrypted message is:\",decrypted_message.decode())\n",
+    "    \n",
+    "decrypt_message(b'gAAAAABf15Eh43nqdBcf5zzzj1KEU7pSp_zcvkW6n4JyeSnwuw6Vkx_MPukZHh_9N4fszxwNpfzce8fDaQA5BvVSc3ETcc2isa_fT2vGDMXPTdEMIoCRZ6U=')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
